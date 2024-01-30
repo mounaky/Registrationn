@@ -1,0 +1,63 @@
+package j2ee;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+
+/**
+ * 
+ */
+public class Filee {
+	
+	
+	public static void main(String[] args) {
+			
+		Connection con=null;
+		Statement stmt=null;
+//		
+//		String iQuery = "INSERT INTO test.register  VALUES ('mouna',128093,99.9)"; To insert the data into the table
+//		String dQuery = "Delete from test.register  where Sid = 12893";  To Delete the data from the table
+		String uQuery="UPDATE test.register SET Sname='Vinaha' WHERE Sid=123"; 
+//		To Update the data in the Table
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			System.out.println("Load and register the Driver Class");
+			con=DriverManager.getConnection("jdbc:mysql://localhost:3306/test?user=root&password=mouna");
+			System.out.println("Established connection with DB server");
+			stmt=con.createStatement();
+			System.out.println("platform/statement created");
+			
+			
+			int val = stmt.executeUpdate(uQuery);
+			if(val>0)
+			{
+				System.out.println("record inserted successfully");
+			}
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		finally{
+			if(stmt!=null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+				if(con!=null) {
+					try {
+						con.close();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+	
+			}
+		System.out.println("All  costly resource  are  closed");
+		}
+}
